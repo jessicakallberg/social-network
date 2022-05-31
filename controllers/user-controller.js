@@ -20,8 +20,8 @@ const userController = {
           res.sendStatus(500).json(err);
     });
   },
-  getUserById(req,res){
-      User.findOne()
+  getUserById(req, res){
+      User.findOne(req.body)
       .select()
       .then((dbUserData) => res.json(dbUserData))
       .catch((err)=> {
@@ -29,10 +29,18 @@ const userController = {
     });
   },
   updateUser(req, res){
-      User.findOneAndUpdate(req.body)
+      User.findAndUpdate(req.body)
       .then((dbUserData) => res.json(dbUserData))
       .catch((err)=>{
           res.sendStatus(500).json(err);
       });
   },
+  deleteUser(req, res){
+    User.findAndDelete(req.body)
+    .then(dbUserData => re.json(dbUserData))
+        .catch(err => res.json(err))
+  }
+}
 
+
+module.exports = userController
