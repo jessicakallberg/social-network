@@ -1,11 +1,11 @@
-const { createSecureServer } = require("http2");
+//const { createSecureServer } = require("http2");
 const { User } = require("../models");
 
 //get all users
 
 const userController = {
   getAllUsers(req, res) {
-    User.find()
+    User.find({})
       .select()
       .then((dbUserData) => res.json(dbUserData))
       .catch((err) => {
@@ -20,8 +20,8 @@ const userController = {
           res.sendStatus(500).json(err);
     });
   },
-  getUserById(req, res){
-      User.findOne(req.body)
+  getUserById({params}, res){
+      User.findOne({id: params.id})
       .select()
       .then((dbUserData) => res.json(dbUserData))
       .catch((err)=> {
@@ -29,16 +29,18 @@ const userController = {
     });
   },
   updateUser(req, res){
-      User.findAndUpdate(req.body)
+      User.findAndUpdate({_id: params.id}, body, {new: true})
       .then((dbUserData) => res.json(dbUserData))
       .catch((err)=>{
           res.sendStatus(500).json(err);
       });
   },
-  deleteUser(req, res){
-    User.findAndDelete(req.body)
+  deleteUser({ params}, res){
+    User.findAndDelete({_id: params.id})
     .then(dbUserData => re.json(dbUserData))
-        .catch(err => res.json(err))
+    .catch((err)=>{
+      res.sendStatus(500).json(err);
+  });
   }
 }
 
